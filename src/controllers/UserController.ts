@@ -8,7 +8,9 @@ class UserController {
   static getAll = async (req: Request, res: Response) => {
     //Get users from database
     const userRepository = getRepository(User);
-    const users = await userRepository.find();
+    const users = await userRepository.find({
+      select: ['id', 'rut', 'lastConnection'],
+    });
     res.send(users);
   };
 
@@ -18,7 +20,9 @@ class UserController {
     //Get the user from database
     const userRepository = getRepository(User);
     try {
-      const user = await userRepository.findOneOrFail(id);
+      const user = await userRepository.findOneOrFail(id, {
+        select: ['id', 'rut', 'lastConnection'],
+      });
       res.send(user);
     } catch (error) {
       res.status(404).send('User not found');
