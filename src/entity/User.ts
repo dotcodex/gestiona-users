@@ -1,13 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, Timestamp } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
+@Entity({
+  name: 'users',
+})
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ unique: true })
+  rut: string;
 
   @Column()
+  password: string;
+
+  @Column({ name: 'last_connection' })
   lastConnection: Date;
 }
