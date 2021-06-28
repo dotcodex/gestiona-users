@@ -37,21 +37,22 @@ class UserController {
     //Get the user from database
     const userRepository = getRepository(User);
     try {
+      let user: User | undefined;
       const { rut } = data;
       const password = createHash(data.password);
-      const _user = await userRepository.findOne({
+      user = await userRepository.findOne({
         where: {
           rut,
           password,
         },
       });
-      if (_user)
+      if (user)
         return res.status(400).json({
           success: false,
           errors: ['user already exists'],
         });
 
-      const user = new User();
+      user = new User();
       user.rut = rut;
       user.password = password;
       await userRepository.save(user);
