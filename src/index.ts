@@ -5,6 +5,8 @@ import path from 'path';
 import { createConnection } from 'typeorm';
 import { User } from './entity/User';
 import routes from './routes';
+import * as amqp from 'amqplib/callback_api';
+import { pull } from './services/queue-service';
 
 dotenv.config();
 const port = process.env.PORT;
@@ -24,7 +26,11 @@ app.listen(port, () => {
       console.log('Loading users from the database...');
       const totalUsers = await connection.manager.count(User);
       console.log('Loaded total users: ', totalUsers);
+      pull(async (message) => {
+        console.log(message.content.toString());
+      });
     })
     .catch((error) => console.log(error));
+
   console.log(`server started at http://localhost:${port}`);
 });
