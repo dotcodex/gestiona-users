@@ -16,11 +16,12 @@ class UserController {
 
   static getOne = async (req: Request, res: Response) => {
     //Get the ID from the url
-    const id = req.params.id;
+    const rut = req.params.rut;
     //Get the user from database
     const userRepository = getRepository(User);
     try {
-      const user = await userRepository.findOneOrFail(id, {
+      const user = await userRepository.findOneOrFail({
+        where: { rut },
         select: ['id', 'rut', 'lastConnection'],
       });
       res.send(user);

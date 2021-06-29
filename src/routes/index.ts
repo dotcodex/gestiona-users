@@ -6,7 +6,7 @@ const router = Router();
 //Get all users
 router.get('/', UserController.getAll);
 // Get one user
-router.get('/:id([0-9]+)', UserController.getOne);
+router.get('/:rut', UserController.getOne);
 // Get one user
 router.post('/', UserController.createOne);
 

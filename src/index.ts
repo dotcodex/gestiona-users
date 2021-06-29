@@ -26,8 +26,14 @@ app.listen(port, () => {
       console.log('Loading users from the database...');
       const totalUsers = await connection.manager.count(User);
       console.log('Loaded total users: ', totalUsers);
-      pull((message) => {
-        console.log(message.content.toString());
+      pull(async (message) => {
+        const user: User = JSON.parse(message.content.toString());
+        await connection.manager.update(
+          User,
+          { id: user.id },
+          { lastConnection: new Date() },
+        );
+        console.log(`the user ${user.rut} has logged in`);
       });
     })
     .catch((error) => console.log(error));
