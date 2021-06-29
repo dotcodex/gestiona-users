@@ -21,14 +21,14 @@ const getChannel = (connection: Connection): Promise<Channel> => {
   });
 };
 
-export const pull = async (action: (message: Message) => Promise<void>) => {
+export const pull = async (action: (message: Message) => void) => {
   const connection = await getQueueConnection();
   const channel = await getChannel(connection);
   channel.assertQueue(QUEUE_NAME, { durable: false });
   channel.prefetch(1);
-  channel.consume(QUEUE_NAME, async (message) => {
+  channel.consume(QUEUE_NAME, (message) => {
     if (message) {
-      await action(message);
+      action(message);
       channel.ack(message);
     }
   });

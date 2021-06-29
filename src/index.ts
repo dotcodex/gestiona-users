@@ -26,7 +26,7 @@ app.listen(port, () => {
       console.log('Loading users from the database...');
       const totalUsers = await connection.manager.count(User);
       console.log('Loaded total users: ', totalUsers);
-      pull(async (message) => {
+      pull((message) => {
         console.log(message.content.toString());
       });
     })
